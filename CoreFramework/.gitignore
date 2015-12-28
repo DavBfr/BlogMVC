@@ -1,0 +1,8 @@
+composer.lock
+config/paths.php
+data/cache
+data/db.sqlite
+model/base
+vendor
+www/cache
+www/fonts

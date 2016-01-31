@@ -29,13 +29,6 @@ class BlogRest extends Crud {
 		$this->filterListField($col, $this->model->getField(PostsModel::CONTENT));
 		$this->filterListField($col, $this->model->getField(PostsModel::SLUG));
 		$this->filterListField($col, $this->model->getField(PostsModel::CREATED));
-/*		const ID = 'id'; // int
-		const CATEGORY_ID = 'category_id'; // int
-		const USER_ID = 'user_id'; // int
-		const NAME = 'name'; // text
-		const SLUG = 'slug'; // text
-		const CONTENT = 'content'; // text
-*/
 	}
 
 
@@ -48,6 +41,7 @@ class BlogRest extends Crud {
 	protected function get_list($r) {
 		$col = Collection::Query($this->model->getTableName())
 			->SelectAs($this->model->getField($this->model->getPrimaryField())->getFullName(), self::ID)
+			->orderByDesc(PostsModel::CREATED)
 			->limit($this->options["limit"]);
 		$this->filterList($col);
 

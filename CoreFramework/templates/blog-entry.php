@@ -56,7 +56,7 @@
 												<img src="http://lorempicsum.com/futurama/100/100/4" width="100%">
 										</div>
 										<div class="col-md-10">
-												<p><strong>{{item.username}}</strong> 10 hours ago</p>
+												<p><strong>{{item.username}}</strong> {{item.created}}</p>
 												<p>{{item.content}}</p>
 										</div>
 								</div>

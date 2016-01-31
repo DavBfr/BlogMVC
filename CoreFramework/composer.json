@@ -10,7 +10,8 @@
 		"role": "Developer"
 	}],
 	"require": {
-		"davbfr/cf": "*"
+		"davbfr/cf": "*",
+		"creativeorange/gravatar": "~1.0"
 	},
 	"scripts": {
 		"post-install-cmd": [
@@ -25,10 +26,7 @@
 	},
 	"repositories": [{
 		"type": "path",
-		"url": "/Users/dad/www/cf"
-	}, {
-		"type": "path",
-		"url": "/Users/dad/www/cf_plugins"
+		"url": "/home/dad/www/cf"
 	}],
 	"minimum-stability": "dev",
 	"archive": {

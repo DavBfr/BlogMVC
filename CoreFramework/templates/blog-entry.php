@@ -25,7 +25,7 @@
 
 							<h3>Comment this post</h3>
 
-							<div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+							<div class="alert alert-danger" data-ng-hide="1" ><strong>Oh snap !</strong> you did some errors</div>
 
 							<form role="form">
 									<div class="row">
@@ -48,26 +48,18 @@
 									</div>
 							</form>
 
-							<h3>2 Commentaires</h3>
+							<h3>{{comments.length}} Commentaires</h3>
 
-							<div class="row">
-									<div class="col-md-2">
-											<img src="http://lorempicsum.com/futurama/100/100/4" width="100%">
-									</div>
-									<div class="col-md-10">
-											<p><strong>Username</strong> 10 hours ago</p>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
-									</div>
-							</div>
-							<div class="row">
-									<hr>
-									<div class="col-md-2">
-											<img src="http://lorempicsum.com/futurama/100/100/5" width="100%">
-									</div>
-									<div class="col-md-10">
-											<p><strong>Username</strong> 11 days ago</p>
-											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
-									</div>
+							<div data-ng-repeat="item in comments">
+								<div class="row">
+										<div class="col-md-2">
+												<img src="http://lorempicsum.com/futurama/100/100/4" width="100%">
+										</div>
+										<div class="col-md-10">
+												<p><strong>{{item.username}}</strong> 10 hours ago</p>
+												<p>{{item.content}}</p>
+										</div>
+								</div>
 							</div>
 					</section>
 
@@ -108,10 +100,3 @@
 					</div>
 			</div><!-- /.sidebar -->
 	</div>
-	
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<button type="button" class="btn btn-default" data-ng-click="go_list()"><?php $this->tr("core.close") ?></button>
-		</div>
-	</div>
-	

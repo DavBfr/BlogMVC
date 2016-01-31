@@ -5,6 +5,39 @@ app.service('BlogService', function ($http) {
 });
 
 
+app.service('CommentService', function ($http) {
+	var service_url = cf_options.rest_path + "/blog/comments";
+
+	var onerror = function(data, status) {
+	};
+
+	this.get_list = function (id, onsuccess, onerror) {
+		$http.get(service_url + "/" + id).success(function (data, status) {
+			if (data.success)
+				onsuccess && onsuccess(data.list, status);
+			else
+				onerror && onerror(data.error);
+		}).error(function (data, status) {
+			onerror && onerror(data, status);
+		});
+	};
+
+	this.get_count = function (filter, onsuccess, onerror) {
+		if (filter == undefined)
+			filter = "";
+		$http.get(service_url + "/count?q="+filter).success(function (data, status) {
+			if (data.success)
+				onsuccess && onsuccess(data);
+			else
+				onerror && onerror(data.error);
+		}).error(function (data, status) {
+			onerror && onerror(data, status);
+		});
+	};
+
+});
+
+
 app.controller('BlogController', function ($scope, $timeout, $location, $route, BlogService, NotificationFactory) {
 	angular.extend(this, new CrudController($scope, $timeout, $location, $route, BlogService, NotificationFactory));
 	this.init();
@@ -22,11 +55,10 @@ app.controller('BlogController', function ($scope, $timeout, $location, $route, 
 
 });
 
-app.controller('BlogDetailController', function ($scope, $timeout, $location, $route, $routeParams, BlogService, NotificationFactory) {
+app.controller('BlogDetailController', function ($scope, $timeout, $location, $route, $routeParams, BlogService, CommentService, NotificationFactory) {
 	angular.extend(this, new CrudController($scope, $timeout, $location, $route, BlogService, NotificationFactory));
-	this.init();
-	this.get_fiche($routeParams.id);
-	
+	var self = this;
+
 	$scope.go_category = function(id) {
 		$location.path("category/" + id);
 		$('html,body').scrollTop(0);
@@ -37,153 +69,31 @@ app.controller('BlogDetailController', function ($scope, $timeout, $location, $r
 		$('html,body').scrollTop(0);
 	};
 
-});
-
-
-function Crud1Controller($scope, $timeout, $location, $route, CrudService, NotificationFactory) {
-	this.init = function () {
-		$scope.perpages = null;
-		$scope.list = [];
-		$scope.item = {};
-		$scope.foreign = {};
-		$scope.filter = "";
-		$scope.pages = 0;
-		$scope.count = 0;
-		$scope.page = 0;
-		$scope.loading = true;
-	};
-
-	this.get_list = function() {
-		CrudService.get_count($scope.filter, function (count) {
-			$scope.count = count.count;
-			$scope.pages = count.pages;
-			$scope.perpages = count.limit;
-			$scope.setPage(CrudService.page || 0);
-		});
-	};
-
-	$scope.go_list = function() {
-		var path = (new RegExp("^/[^/]+")).exec($route.current.originalPath)[0];
-		$location.path(path);
-	};
-
-	$scope.go_detail = function(id) {
-		var path = (new RegExp("^/[^/]+")).exec($route.current.originalPath)[0];
-		$location.path(path + "/" + id);
-	};
-
 	this.get_fiche = function(id) {
-		if (!id || id=='new') {
-			$scope.id = null;
-			CrudService.getNew(function (data) {
-				$scope.item = data.data;
-				if (data.foreigns) {
-					for (item in data.foreigns) {
-						var name = data.foreigns[item];
-						(function(name_){
-							CrudService.getForeign(name, function(data) {
-								$scope.foreign[name_] = data.list;
-							});
-						})(name);
-					}
-				}
-				$scope.loading = false;
-			}, function (data) {
-				$scope.loading = false;
-				NotificationFactory.error(data);
-			});
-		} else {
-			CrudService.getOne(id, function (data) {
-				$scope.id = id;
-				$scope.item = data.data;
-				if (data.foreigns) {
-					for (item in data.foreigns) {
-						var name = data.foreigns[item];
-						(function(name_){
-							CrudService.getForeign(name, function(data) {
-								$scope.foreign[name_] = data.list;
-							});
-						})(name);
-					}
-				}
-				$scope.loading = false;
-			}, function (data) {
-				$scope.loading = false;
-				NotificationFactory.error(data);
-			});
-		}
-	};
-
-	$scope.del = function(id) {
-		NotificationFactory.confirm("Delete the record #" + id + " ?", function () {
-			CrudService.del(id, function () {
-				var path = (new RegExp("^/[^/]+")).exec($route.current.originalPath)[0];
-				if (path == $route.current.originalPath)
-					this.get_list();
-				else
-					$scope.go_list();
-				NotificationFactory.success("Record #"+ id +" deleted");
-			}.bind(this), function (data) {
-				NotificationFactory.error(data);
-			});
-		}.bind(this));
-	}.bind(this);
-
-
-	$scope.save = function(id, data) {
-		$scope.loading = true;
-		for (item in data) {
-			if (data[item] instanceof Date) {
-				data[item] = data[item].getTime()/1000;
-			}
-		}
-		if (id) {
-			CrudService.save(id, data, function () {
-				$scope.go_list();
-				//this.get_fiche(id);
-				NotificationFactory.success("Record #"+ id +" saved");
-			}.bind(this), function (data) {
-				NotificationFactory.error(data);
-			});
-		} else {
-			CrudService.add(data, function (id) {
-				$scope.go_list();
-				//this.get_fiche(id);
-				NotificationFactory.success("New record #"+ id +" saved");
-			}.bind(this), function (data) {
-				$scope.loading = false;
-				NotificationFactory.error(data);
-			});
-		}
-	}.bind(this);
-
-	$scope.getPages = function() {
-		return new Array($scope.pages);
-	};
-
-	$scope.setPage = function(num) {
-		if (num < 0)
-			num = 0;
-		if (num > $scope.pages -1)
-			num = $scope.pages -1;
-
-		$scope.loading = true;
-
-		$scope.page = num;
-		CrudService.get_list($scope.filter, $scope.page, function (data) {
-			$('html,body').scrollTop(0);
-			$scope.list = data;
-			CrudService.page = $scope.page;
+		BlogService.getOne(id, function (data) {
+			$scope.id = id;
+			$scope.item = data.data;
 			$scope.loading = false;
+			self.get_comments(data.data.id);
 		}, function (data) {
 			$scope.loading = false;
 			NotificationFactory.error(data);
 		});
 	};
-	
-	$scope.Search = function () {
-		this.get_list();
-	}.bind(this);
-}
+
+	this.get_comments = function(id) {
+		$scope.comments_loading = true;
+		CommentService.get_list(id, function (data) {
+			$scope.comments = data;
+			$scope.comments_loading = false;
+		}, function (data) {
+			$scope.comments_loading = false;
+			NotificationFactory.error(data);
+		});
+	};
+
+	this.init();
+	this.get_fiche($routeParams.id);
+});
 
 }

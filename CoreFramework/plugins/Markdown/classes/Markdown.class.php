@@ -1,11 +1,11 @@
-<?php
+<?php namespace DavBfr\CF;
 
 require_once(__DIR__ . "/../libs/Markdown.php");
 
 class Markdown {
 
 	public static function transform($data) {
-		$md = new Michelf\Markdown();
+		$md = new \Michelf\Markdown();
 		return $md->defaultTransform($data);
 	}
 

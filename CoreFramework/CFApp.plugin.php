@@ -1,4 +1,4 @@
-<?php
+<?php namespace DavBfr\CF;
 
 class CFAppPlugin extends Plugins {
 

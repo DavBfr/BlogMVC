@@ -1,7 +1,13 @@
-<?php
+<?php namespace DavBfr\CF;
 //Session::ensureLoggedin();
 
 class BlogRest extends Crud {
+
+	public function getRoutes() {
+		parent::getRoutes();
+		$this->addRoute("/comments/:id", "GET", "get_comments");
+	}
+
 
 	protected function getModel() {
 		return new PostsModel();
@@ -44,11 +50,11 @@ class BlogRest extends Crud {
 			->SelectAs($this->model->getField($this->model->getPrimaryField())->getFullName(), self::ID)
 			->limit($this->options["limit"]);
 		$this->filterList($col);
-		
+
 		if (isset($_GET["q"]) && strlen($_GET["q"])>0) {
 			$col->filter($_GET["q"]);
 		}
-		
+
 		$list = array();
 		foreach($col->getValues(isset($_GET["p"])?intval($_GET["p"]):0) as $row) {
 			$list[] = $this->list_values($row);
@@ -69,7 +75,7 @@ class BlogRest extends Crud {
 		$values["created"] = $item->get("created");
 		$values["name"] = $item->get("name");
 		$values["content"] = Markdown::transform($item->get("content"));
-		
+
 		$cats = new CategoriesModel();
 		$cat = $cats->getById($item->get("category_id"));
 		$values["category"] = $cat->get("name");
@@ -78,8 +84,25 @@ class BlogRest extends Crud {
 		$users = new UsersModel();
 		$user = $users->getById($item->get("user_id"));
 		$values["user"] = $user->get("username");
-		
+
 		Output::success(array(self::ID=>$id, "foreigns"=>array(), "data"=>$values));
+	}
+
+
+	protected function get_comments($r) {
+		Input::ensureRequest($r, array("id"));
+		$id = $r["id"];
+
+		$col = Collection::Query(CommentsModel::TABLE)
+			->Select(CommentsModel::USERNAME, CommentsModel::CONTENT, CommentsModel::CREATED)
+			->WhereEq(CommentsModel::POST_ID, $id)
+			->orderBy(CommentsModel::CREATED);
+		$list = array();
+		foreach($col->getValues(isset($_GET["p"])?intval($_GET["p"]):0) as $row) {
+			$list[] = $row;
+		}
+
+		Output::success(array("list"=>$list));
 	}
 
 }

@@ -1,8 +1,8 @@
 composer.lock
 config/paths.php
+model/base
 data/cache
 data/db.sqlite
-model/base
 vendor
 www/cache
 www/fonts

@@ -27,24 +27,24 @@
 
 							<div class="alert alert-danger" data-ng-hide="1" ><strong>Oh snap !</strong> you did some errors</div>
 
-							<form role="form">
+							<form name="comment" role="form">
 									<div class="row">
 											<div class="col-md-6">
-													<div class="form-group">
-															<input type="email" class="form-control" placeholder="Your email">
+													<div ng-class="{'form-group': true, 'has-error':comment.comment_email.$error.email || comment.comment_email.$error.required}">
+															<input type="email" data-ng-required="true" class="form-control" name="comment_email" data-ng-model="comment_email" placeholder="Your email">
 													</div>
 											</div>
 											<div class="col-md-6">
-													<div class="form-group has-error">
-															<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
+													<div ng-class="{'form-group': true, 'has-error':comment.comment_user.$error.required}">
+															<input type="text" class="form-control" data-ng-required="true" name="comment_user" data-ng-model="comment_user" placeholder="Your username">
 													</div>
 											</div>
 									</div>
-									<div class="form-group">
-											<textarea class="form-control" rows="3" placeholder="Your comment"></textarea>
+									<div ng-class="{'form-group': true, 'has-error':comment.comment_content.$error.required}">
+											<textarea class="form-control" rows="3" name="comment_content" data-ng-model="comment_content" data-ng-required="true" placeholder="Your comment"></textarea>
 									</div>
 									<div class="form-group">
-											<button type="submit" class="btn btn-primary">Submit</button>
+											<button type="submit" data-loading-text="<?php $this->tr("core.saving") ?> ..." data-ng-disabled="comment.$invalid" class="btn btn-primary" data-ng-click="save_comment()"><?php $this->tr("core.submit") ?></button>
 									</div>
 							</form>
 

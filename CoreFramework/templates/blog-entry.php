@@ -68,26 +68,7 @@
 			</div>
 
 			<div class="col-md-4 sidebar">
-
-					<h4>Categories</h4>
-					<div class="list-group">
-							<a href="category.html" class="list-group-item">
-									<span class="badge">14</span>
-									Category #1
-							</a>
-							<a href="category.html" class="list-group-item">
-									<span class="badge">5</span>
-									Category #2
-							</a>
-							<a href="category.html" class="list-group-item">
-									<span class="badge">1</span>
-									Category #3
-							</a>
-							<a href="category.html" class="list-group-item">
-									<span class="badge">7</span>
-									Category #4
-							</a>
-					</div>
+					<?php $this->insert("blog-categories.php"); ?>
 
 					<h4>Last posts</h4>
 					<div class="list-group">

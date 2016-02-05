@@ -10,7 +10,8 @@
 		"role": "Developer"
 	}],
 	"require": {
-		"davbfr/cf": "*",
+		"davbfr/cf": "2.*",
+		"ext-pdo_sqlite": "*",
 		"creativeorange/gravatar": "~1.0"
 	},
 	"scripts": {

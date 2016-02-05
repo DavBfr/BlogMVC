@@ -1,5 +1,3 @@
-if (typeof app != 'undefined') {
-
 app.service('BlogService', function ($http) {
 	 angular.extend(this, new CrudService($http, 'blog'));
 });
@@ -95,5 +93,3 @@ app.controller('BlogDetailController', function ($scope, $timeout, $location, $r
 	this.init();
 	this.get_fiche($routeParams.id);
 });
-
-}

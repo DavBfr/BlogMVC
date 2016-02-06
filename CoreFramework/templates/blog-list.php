@@ -26,7 +26,7 @@
 					<h2><a href data-ng-click="go_detail(item.slug)">{{item.name}}</a></h2>
 					<p>
 						<small>
-							Category : <a href="category.html">Nature</a>, by <a href="index.html">John Doe</a> on
+							Category : <a href data-ng-click="go_category(item.catslug)">{{item.catname}}</a>, by <a href data-ng-click="go_user(item.username)">{{item.username}}</a> on
 							<em>{{item.created}}</em>
 						</small>
 					</p>
@@ -56,15 +56,6 @@
 
 	<div class="col-md-4 sidebar">
 		<?php $this->insert("blog-categories.php"); ?>
-		<h4>Last posts</h4>
-		<div class="list-group">
-			<a href="post.html" class="list-group-item">
-										The Route of All Evil
-								</a>
-			<a href="post.html" class="list-group-item">
-										Good news everyone !
-								</a>
-		</div>
+		<?php $this->insert("last-posts.php"); ?>
 	</div>
-	<!-- /.sidebar -->
 </div>

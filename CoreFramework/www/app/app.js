@@ -7,7 +7,7 @@ if (typeof angular != 'undefined') {
 			controller: 'BlogController',
 			templateUrl: cf_options.rest_path + '/blog/list',
 		});
-		
+
 		AddPostsRoutes($routeProvider);
 		AddCategoriesRoutes($routeProvider)
 		AddUsersRoutes($routeProvider)
@@ -15,6 +15,11 @@ if (typeof angular != 'undefined') {
 		$routeProvider.when('/:id', {
 				controller: 'BlogDetailController',
 				templateUrl: cf_options.rest_path + '/blog/detail',
+		});
+
+		$routeProvider.when('/category/:id', {
+				controller: 'CategoryController',
+				templateUrl: cf_options.rest_path + '/blog/catlist',
 		});
 
 		$routeProvider.otherwise({

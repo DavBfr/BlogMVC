@@ -15,4 +15,18 @@ class CategoriesModel extends BaseCategoriesModel {
       return $value;
     }
 
+
+    public static function getList() {
+      $col = Collection::Query(self::TABLE)
+        ->Select(self::SLUG, self::NAME, self::POST_COUNT)
+        ->orderBy(self::NAME)
+        ->limit(20);
+      $list = array();
+      foreach($col->getValues() as $row) {
+        $list[] = $row;
+      }
+      return $list;
+    }
+
+
 }

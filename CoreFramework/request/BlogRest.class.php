@@ -6,6 +6,7 @@ class BlogRest extends Crud {
 	public function getRoutes() {
 		parent::getRoutes();
 		$this->addRoute("/comments/:id", "GET", "get_comments");
+		$this->addRoute("/catlist", "GET", "get_catlist");
 	}
 
 
@@ -41,9 +42,18 @@ class BlogRest extends Crud {
 	protected function get_list($r) {
 		$col = Collection::Query($this->model->getTableName())
 			->SelectAs($this->model->getField($this->model->getPrimaryField())->getFullName(), self::ID)
+
+			->leftJoin(CategoriesModel::TABLE, CategoriesModel::TABLE.".".CategoriesModel::ID ."=". PostsModel::TABLE.".".PostsModel::CATEGORY_ID)
+			->SelectAs(CategoriesModel::TABLE.".".CategoriesModel::NAME, "catname")
+			->SelectAs(CategoriesModel::TABLE.".".CategoriesModel::SLUG, "catslug")
+
+			->leftJoin(UsersModel::TABLE, UsersModel::TABLE.".".UsersModel::ID ."=". PostsModel::TABLE.".".PostsModel::USER_ID)
 			->orderByDesc(PostsModel::CREATED)
+			->SelectAs(UsersModel::TABLE.".".UsersModel::USERNAME, "username")
 			->limit($this->options["limit"]);
 		$this->filterList($col);
+
+//Query SELECT posts.id as CRUD_ID_FIELD, posts.name as name, posts.content as content, posts.slug as slug, posts.created as created FROM posts LEFT JOIN categories ON id=category_id ORDER BY created desc LIMIT 0, 5  []
 
 		if (isset($_GET["q"]) && strlen($_GET["q"])>0) {
 			$col->filter($_GET["q"]);
@@ -86,17 +96,14 @@ class BlogRest extends Crud {
 	protected function get_comments($r) {
 		Input::ensureRequest($r, array("id"));
 		$id = $r["id"];
-
-		$col = Collection::Query(CommentsModel::TABLE)
-			->Select(CommentsModel::USERNAME, CommentsModel::CONTENT, CommentsModel::CREATED)
-			->WhereEq(CommentsModel::POST_ID, $id)
-			->orderBy(CommentsModel::CREATED);
-		$list = array();
-		foreach($col->getValues(isset($_GET["p"])?intval($_GET["p"]):0) as $row) {
-			$list[] = $row;
-		}
-
+		$list = CommentsModel::fromPost($id);
 		Output::success(array("list"=>$list));
+	}
+
+
+	protected function get_catlist($r) {
+		$tpt = new Template($this->options);
+		$tpt->outputCached("cat-posts.php");
 	}
 
 }

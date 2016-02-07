@@ -25,12 +25,18 @@ class PostsModel extends BasePostsModel {
 
 
   public function dataChanged() {
-    $cats = new CategoriesModel();
-    foreach($cats->simpleSelect() as $cat) {
-      $nb = Collection::Query(self::TABLE)->whereEq(self::CATEGORY_ID, $cat->getId());
-      $cat->set(CategoriesModel::POST_COUNT, $nb);
-      $cat->save();
+    Logger::info("PostsModel modified");
+    $cache = new MemCache();
+    $cache["posts-modified"] = true;
+  }
+
+
+  public static function isModified() {
+    if (!MEMCACHE_ENABLED || (isset($cache["posts-modified"]) && $cache["posts-modified"] == true)) {
+      $cache["posts-modified"] = false;
+      return true;
     }
+    return false;
   }
 
 }

@@ -17,6 +17,9 @@ class CategoriesModel extends BaseCategoriesModel {
 
 
     public static function getList() {
+      if (PostsModel::isModified())
+        self::updateCounts();
+
       $col = Collection::Query(self::TABLE)
         ->Select(self::SLUG, self::NAME, self::POST_COUNT)
         ->orderBy(self::NAME)
@@ -26,6 +29,16 @@ class CategoriesModel extends BaseCategoriesModel {
         $list[] = $row;
       }
       return $list;
+    }
+
+
+    public static function updateCounts() {
+      $cats = new CategoriesModel();
+      foreach($cats->simpleSelect() as $cat) {
+        $nb = Collection::Query(PostsModel::TABLE)->whereEq(PostsModel::CATEGORY_ID, $cat->getId())->getCount();
+        $cat->set(self::POST_COUNT, $nb);
+        $cat->save();
+      }
     }
 
 

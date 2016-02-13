@@ -2,6 +2,13 @@
 
 class CommentsModel extends BaseCommentsModel {
 
+  public function newRow() {
+    $data = parent::newRow();
+    $data->set(self::CREATED, time());
+    return $data;
+  }
+
+
   public static function fromPost($id) {
     $col = Collection::Query(self::TABLE)
       ->Select(self::USERNAME, self::CONTENT, self::CREATED)

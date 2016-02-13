@@ -6,6 +6,7 @@ class BlogRest extends Crud {
 	public function getRoutes() {
 		parent::getRoutes();
 		$this->addRoute("/comments/:id", "GET", "get_comments");
+		$this->addRoute("/comments/:id", "PUT", "post_comment");
 		$this->addRoute("/catlist", "GET", "get_catlist");
 	}
 
@@ -104,6 +105,22 @@ class BlogRest extends Crud {
 	protected function get_catlist($r) {
 		$tpt = new Template($this->options);
 		$tpt->outputCached("cat-posts.php");
+	}
+
+
+	protected function post_comment($r) {
+		Input::ensureRequest($r, array("id"));
+		$id = $r["id"];
+		$posts = $this->jsonPost();
+		Input::ensureRequest($posts, array("username", "mail", "content"));
+		$comments = new CommentsModel();
+		$comment = $comments->newRow();
+		$comment->set(CommentsModel::POST_ID, $id);
+		$comment->set(CommentsModel::USERNAME, $posts["username"]);
+		$comment->set(CommentsModel::MAIL, $posts["mail"]);
+		$comment->set(CommentsModel::CONTENT, $posts["content"]);
+		$comment->save();
+		Output::success($comment->getValues());
 	}
 
 }

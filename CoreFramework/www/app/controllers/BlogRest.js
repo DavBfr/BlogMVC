@@ -33,6 +33,17 @@ app.service('CommentService', function ($http) {
 		});
 	};
 
+	this.save = function(post, user, email, content, onsuccess, onerror) {
+		$http.put(service_url + "/" + post, {'username': user, 'mail': email, 'content': content}).success(function (data, status) {
+			if (data.success)
+				onsuccess && onsuccess(data);
+			else
+				onerror && onerror(data.error);
+		}).error(function (data, status) {
+			onerror && onerror(data, status);
+		});
+	};
+
 });
 
 
@@ -90,6 +101,20 @@ app.controller('BlogDetailController', function ($scope, $timeout, $location, $r
 		});
 	};
 
+	$scope.save_comment = function() {
+		$scope.comment_submitting = true;
+		CommentService.save($scope.item.id, $scope.comment_user, $scope.comment_email, $scope.comment_content, function (data) {
+			$scope.comment_error = false;
+			$scope.comments.unshift(data);
+			$scope.comment_content = "";
+			$scope.comment_submitting = false;
+		}, function (err) {
+			$scope.comment_submitting = false;
+			$scope.comment_error = err;
+		});
+	}
+
 	this.init();
+	$scope.comment_error = false;
 	this.get_fiche($routeParams.id);
 });

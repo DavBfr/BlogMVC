@@ -20,7 +20,7 @@
 			"username": { "type": "text", "null": false, "primary": false, "default": null, "autoincrement": false },
 			"mail": { "type": "text", "null": false, "primary": false, "default": null, "autoincrement": false },
 			"content": { "type": "text", "null": false, "primary": false, "default": null, "autoincrement": false },
-			"created": { "type": "date", "null": false, "primary": false, "default": null, "autoincrement": false }
+			"created": { "type": "datetime", "null": false, "primary": false, "default": null, "autoincrement": false }
 		},
 		"posts": {
 			"id": { "type": "auto", "null": false, "list": false, "edit": false, "primary": true, "default": null, "autoincrement": true },

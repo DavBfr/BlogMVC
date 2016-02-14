@@ -30,10 +30,10 @@
   <div ng-repeat="item in comments">
     <div class="row">
         <div class="col-md-2">
-            <img src="http://lorempicsum.com/futurama/100/100/4" width="100%">
+            <img src="http://www.gravatar.com/avatar/{{ item.gid }}?s=100&amp;d=blank" width="100%">
         </div>
         <div class="col-md-10">
-            <p><strong>{{item.username}}</strong> {{item.created}}</p>
+            <p><strong>{{item.username}}</strong> {{item.created | date:'medium'}}</p>
             <p>{{item.content}}</p>
         </div>
     </div>

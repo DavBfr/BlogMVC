@@ -120,7 +120,12 @@ class BlogRest extends Crud {
 		$comment->set(CommentsModel::MAIL, $posts["mail"]);
 		$comment->set(CommentsModel::CONTENT, $posts["content"]);
 		$comment->save();
-		Output::success($comment->getValues());
+		$ret = $comment->getValues();
+		$ret["gid"] = md5($ret[CommentsModel::MAIL]);
+		unset($ret[CommentsModel::ID]);
+		unset($ret[CommentsModel::POST_ID]);
+		unset($ret[CommentsModel::MAIL]);
+		Output::success($ret);
 	}
 
 }

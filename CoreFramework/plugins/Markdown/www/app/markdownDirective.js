@@ -4,18 +4,14 @@ app.directive('ngMarkdown', [function() {
 		restrict: 'EA',
 		require: '?ngModel',
 		link: function(scope, elem, attrs, ngModel) {
-			var simplemde = new SimpleMDE({ element: elem.context,
-				toolbar: ["bold", "italic", "heading", "|", "code", "quote", "unordered-list",
-								"ordered-list",
-								"clean-block",
-								"link",
-								"image",
-								"table",
-								"horizontal-rule",
-								"|",
-								"preview"
-],
+			var simplemde = new SimpleMDE({
+				element: elem[0],
+				//toolbar: ["bold", "italic", "heading", "|", "code", "quote", "unordered-list", "ordered-list", "clean-block", "link", "image", "horizontal-rule", "|", "preview"],
+				hideIcons: ["side-by-side", "fullscreen", "guide"],
+				placeholder: attrs.placeholder || '',
+				spellChecker: false
 			});
+
 			simplemde.codemirror.on("change", function(instance) {
 				var newValue = instance.getValue();
  				if (newValue !== ngModel.$viewValue) {
@@ -24,9 +20,12 @@ app.directive('ngMarkdown', [function() {
 	 				});
  				}
 			});
+
 			ngModel.$render = function() {
 	      var safeViewValue = ngModel.$viewValue || '';
-	      simplemde.value(safeViewValue);
+				scope.$evalAsync(function() {
+      		simplemde.value(safeViewValue);
+				});
 			};
 		}
 	};

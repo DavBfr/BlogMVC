@@ -27,7 +27,7 @@
 					<p>
 						<small>
 							Category : <a href data-ng-click="go_category(item.catslug)">{{item.catname}}</a>, by <a href data-ng-click="go_user(item.username)">{{item.username}}</a> on
-							<em>{{item.created}}</em>
+							<em>{{item.created*1000|date:'medium'}}</em>
 						</small>
 					</p>
 					<p ng-bind-html="item.content | unsafehtml"/>

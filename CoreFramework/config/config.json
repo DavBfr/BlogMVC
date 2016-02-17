@@ -24,7 +24,7 @@
 		},
 		"posts": {
 			"id": { "type": "auto", "null": false, "list": false, "edit": false, "primary": true, "default": null, "autoincrement": true },
-			"category_id": { "type": "int", "caption":"Category", "null": false, "primary": false, "default": null, "autoincrement": false, "foreign": ["categories", "id", "name"] },
+			"category_id": { "type": "int", "caption":"Category", "list": true, "null": false, "primary": false, "default": null, "autoincrement": false, "foreign": ["categories", "id", "name"] },
 			"user_id": { "type": "int", "null": false, "primary": false, "edit":false, "default": null, "autoincrement": false },
 			"name": { "caption": "Name", "type": "text", "list":true, "null": false, "primary": false, "default": null, "autoincrement": false },
 			"slug": { "type": "text", "null": false, "primary": false, "edit":false, "default": null, "autoincrement": false },

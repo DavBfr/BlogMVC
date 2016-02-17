@@ -33,7 +33,7 @@
             <img src="http://www.gravatar.com/avatar/{{ item.gid }}?s=100&amp;d=blank" width="100%">
         </div>
         <div class="col-md-10">
-            <p><strong>{{item.username}}</strong> {{item.created | date:'medium'}}</p>
+            <p><strong>{{item.username}}</strong> {{item.created*1000 | date:'medium'}}</p>
             <p>{{item.content}}</p>
         </div>
     </div>

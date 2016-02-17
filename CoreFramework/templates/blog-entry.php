@@ -14,7 +14,7 @@
 							<h1>{{item.name}}</h1>
 							<p><small>
 									Category : <a href ng-click="go_category(item.category_slug)">{{item.category}}</a>,
-									by <a href ng-click="go_user(item.user)">{{item.user}}</a> on <em>{{item.created|date:'medium'}}</em>
+									by <a href ng-click="go_user(item.user)">{{item.user}}</a> on <em>{{item.created*1000|date:'medium'}}</em>
 							</small></p>
 					</div>
 

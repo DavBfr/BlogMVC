@@ -1,13 +1,15 @@
 <?php namespace DavBfr\CF;
-//Session::ensureLoggedin();
 
 class BlogRest extends Crud {
 
 	public function getRoutes() {
-		parent::getRoutes();
-		$this->addRoute("/comments/:id", "GET", "get_comments");
-		$this->addRoute("/comments/:id", "PUT", "post_comment");
-		$this->addRoute("/catlist", "GET", "get_catlist");
+		$this->addRoute("/", "GET", "get_list");
+		$this->addRoute("/count", "GET", "get_count");
+		$this->addRoute("/list", "GET", "get_list_partial");
+		$this->addRoute("/detail", "GET", "get_detail_partial");
+		//$this->addRoute("/new", "GET", "get_new");
+		$this->addRoute("/get/:id", "GET", "get_item");
+		//$this->addRoute("/foreign/:name", "GET", "get_foreign");
 	}
 
 
@@ -18,8 +20,8 @@ class BlogRest extends Crud {
 
 	protected function getOptions() {
 		return array(
-			"list_partial"=>"blog-list.php",
-			"detail_partial"=>"blog-entry.php",
+			"list_partial" => "blog-list.php",
+			"detail_partial" => "blog-entry.php",
 			"limit" => 5,
 		);
 	}
@@ -44,28 +46,28 @@ class BlogRest extends Crud {
 		$col = Collection::Query($this->model->getTableName())
 			->SelectAs($this->model->getField($this->model->getPrimaryField())->getFullName(), self::ID)
 
-			->leftJoin(CategoriesModel::TABLE, CategoriesModel::TABLE.".".CategoriesModel::ID ."=". PostsModel::TABLE.".".PostsModel::CATEGORY_ID)
-			->SelectAs(CategoriesModel::TABLE.".".CategoriesModel::NAME, "catname")
-			->SelectAs(CategoriesModel::TABLE.".".CategoriesModel::SLUG, "catslug")
+			->leftJoin(CategoriesModel::TABLE, CategoriesModel::TABLE . "." . CategoriesModel::ID . "=" . PostsModel::TABLE . "." . PostsModel::CATEGORY_ID)
+			->SelectAs(CategoriesModel::TABLE . "." . CategoriesModel::NAME, "catname")
+			->SelectAs(CategoriesModel::TABLE . "." . CategoriesModel::SLUG, "catslug")
 
-			->leftJoin(UsersModel::TABLE, UsersModel::TABLE.".".UsersModel::ID ."=". PostsModel::TABLE.".".PostsModel::USER_ID)
+			->leftJoin(UsersModel::TABLE, UsersModel::TABLE . "." . UsersModel::ID . "=" . PostsModel::TABLE . "." . PostsModel::USER_ID)
 			->orderByDesc(PostsModel::CREATED)
-			->SelectAs(UsersModel::TABLE.".".UsersModel::USERNAME, "username")
+			->SelectAs(UsersModel::TABLE . "." . UsersModel::USERNAME, "username")
 			->limit($this->options["limit"]);
 		$this->filterList($col);
 
 //Query SELECT posts.id as CRUD_ID_FIELD, posts.name as name, posts.content as content, posts.slug as slug, posts.created as created FROM posts LEFT JOIN categories ON id=category_id ORDER BY created desc LIMIT 0, 5  []
 
-		if (isset($_GET["q"]) && strlen($_GET["q"])>0) {
+		if (isset($_GET["q"]) && strlen($_GET["q"]) > 0) {
 			$col->filter($_GET["q"]);
 		}
 
 		$list = array();
-		foreach($col->getValues(isset($_GET["p"])?intval($_GET["p"]):0) as $row) {
+		foreach($col->getValues(isset($_GET["p"]) ? intval($_GET["p"]) : 0) as $row) {
 			$list[] = $this->list_values($row);
 		}
 
-		Output::success(array("list"=>$list));
+		Output::success(array("list" => $list));
 	}
 
 
@@ -90,42 +92,8 @@ class BlogRest extends Crud {
 		$user = $users->getById($item->get("user_id"));
 		$values["user"] = $user->get("username");
 
-		Output::success(array(self::ID=>$id, "foreigns"=>array(), "data"=>$values));
+		Output::success(array(self::ID => $id, "foreigns" => array(), "data" => $values));
 	}
 
-
-	protected function get_comments($r) {
-		Input::ensureRequest($r, array("id"));
-		$id = $r["id"];
-		$list = CommentsModel::fromPost($id);
-		Output::success(array("list"=>$list));
-	}
-
-
-	protected function get_catlist($r) {
-		$tpt = new Template($this->options);
-		$tpt->outputCached("cat-posts.php");
-	}
-
-
-	protected function post_comment($r) {
-		Input::ensureRequest($r, array("id"));
-		$id = $r["id"];
-		$posts = $this->jsonPost();
-		Input::ensureRequest($posts, array("username", "mail", "content"));
-		$comments = new CommentsModel();
-		$comment = $comments->newRow();
-		$comment->set(CommentsModel::POST_ID, $id);
-		$comment->set(CommentsModel::USERNAME, $posts["username"]);
-		$comment->set(CommentsModel::MAIL, $posts["mail"]);
-		$comment->set(CommentsModel::CONTENT, $posts["content"]);
-		$comment->save();
-		$ret = $comment->getValues();
-		$ret["gid"] = md5($ret[CommentsModel::MAIL]);
-		unset($ret[CommentsModel::ID]);
-		unset($ret[CommentsModel::POST_ID]);
-		unset($ret[CommentsModel::MAIL]);
-		Output::success($ret);
-	}
 
 }

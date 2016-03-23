@@ -14,7 +14,7 @@ class MdTemplate extends Template {
 			break;
 		}
 		if ($template === false)
-			ErrorHandler::error(404, NULL, implode(", ", $filenames));
+			ErrorHandler::error(404, null, implode(", ", $filenames));
 
 		return Markdown::transform(file_get_contents($template));
 	}

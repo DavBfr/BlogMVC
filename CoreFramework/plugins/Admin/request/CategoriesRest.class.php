@@ -1,5 +1,5 @@
 <?php namespace DavBfr\CF;
-//Session::ensureLoggedin();
+Session::ensureLoggedin();
 
 class CategoriesRest extends Crud {
 
@@ -16,7 +16,7 @@ class CategoriesRest extends Crud {
 
 	protected function get_cat() {
 		$list = CategoriesModel::getList();
-		Output::success(array("list"=>$list));
+		Output::success(array("list" => $list));
 	}
 
 }

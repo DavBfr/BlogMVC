@@ -7,7 +7,7 @@ app.service('CatService', function ($http) {
 			return;
 		}
 
-		$http.get(cf_options.rest_path + "/categories/cat").success(function (data, status) {
+		$http.get(cf_options.rest_path + "/blog-cat").success(function (data, status) {
 			if (data.success) {
 				data_cache = data.list;
 				onsuccess && onsuccess(data.list, status);
@@ -33,8 +33,9 @@ app.controller('CatController', function ($scope, $location, CatService, Notific
 		NotificationFactory.error(data);
 	});
 
-	$scope.go_cat = function (slug) {
+	$scope.go_category = function (slug) {
 		$location.path("/category/" + slug);
+		$('html,body').scrollTop(0);
 	};
 
 });
@@ -50,8 +51,8 @@ app.controller('CategoryController', function ($scope, $timeout, $location, $rou
 		$('html,body').scrollTop(0);
 	};
 
-	$scope.go_category = function(id) {
-		$location.path("category/" + id);
+	$scope.go_category = function(slug) {
+		$location.path("category/" + slug);
 		$('html,body').scrollTop(0);
 	};
 

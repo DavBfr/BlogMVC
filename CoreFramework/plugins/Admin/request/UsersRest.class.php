@@ -1,5 +1,5 @@
 <?php namespace DavBfr\CF;
-//Session::ensureLoggedin();
+Session::ensureLoggedin();
 
 class UsersRest extends Crud {
 

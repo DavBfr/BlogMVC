@@ -15,7 +15,7 @@ class CommentsModel extends BaseCommentsModel {
       ->WhereEq(self::POST_ID, $id)
       ->orderByDesc(self::CREATED);
     $list = array();
-    foreach($col->getValues(isset($_GET["p"])?intval($_GET["p"]):0) as $row) {
+    foreach($col->getValues(isset($_GET["p"]) ? intval($_GET["p"]) : 0) as $row) {
       $row["gid"] = md5($row["mail"]);
       unset($row["mail"]);
       $list[] = $row;

@@ -1,4 +1,5 @@
-<section class="comments">
+<hr>
+<section class="comments" ng-controller="CommentsController">
   <h3>Comment this post</h3>
   <div class="alert alert-danger" ng-cloak ng-show="comment_error" ><strong>Oh snap !</strong> you did some errors: {{comment_error}}</div>
   <form name="comment" role="form" ng-submit="save_comment()">

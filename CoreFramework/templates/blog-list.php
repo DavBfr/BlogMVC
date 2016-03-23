@@ -55,7 +55,7 @@
 	</div>
 
 	<div class="col-md-4 sidebar">
-		<?php $this->insert("blog-categories.php"); ?>
+		<?php $this->insert("blog-categories.php", true); ?>
 		<?php $this->insert("last-posts.php"); ?>
 	</div>
 </div>

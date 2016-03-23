@@ -3,14 +3,14 @@
 class CategoriesModel extends BaseCategoriesModel {
 
     public function setNameField($data, $value) {
-      if ($data->get(self::SLUG) == NULL)
+      if ($data->get(self::SLUG) == null)
         $data->set(self::SLUG, Slug::create($value));
       return $value;
     }
 
 
     public function setSlugField($data, $value) {
-      if ($value == NULL)
+      if ($value == null)
         return $data->get(self::SLUG);
       return $value;
     }
@@ -33,7 +33,7 @@ class CategoriesModel extends BaseCategoriesModel {
 
 
     public static function updateCounts() {
-      $cats = new CategoriesModel();
+      $cats = new self();
       foreach($cats->simpleSelect() as $cat) {
         $nb = Collection::Query(PostsModel::TABLE)->whereEq(PostsModel::CATEGORY_ID, $cat->getId())->getCount();
         $cat->set(self::POST_COUNT, $nb);

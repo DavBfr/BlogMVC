@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="RouteController">
-<div class="container-fluid">
+<div class="container">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
 			<span class="sr-only"><?php $this->tr("core.toggle_navigation") ?></span>
@@ -17,7 +17,7 @@
 
 		<ul class="nav navbar-nav navbar-right">
 			<li>
-				<a href="javascript:void(0)" data-ng-click="logout()">Admin</a>
+				<a href="<?php echo REST_PATH ?>/admin">Admin</a>
 			</li>
 		</ul>
 	</div>

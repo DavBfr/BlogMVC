@@ -8,10 +8,11 @@ if (typeof angular != 'undefined') {
 			templateUrl: cf_options.rest_path + '/blog/list',
 		});
 
+/*
 		AddPostsRoutes($routeProvider);
 		AddCategoriesRoutes($routeProvider)
 		AddUsersRoutes($routeProvider)
-
+*/
 		$routeProvider.when('/:id', {
 				controller: 'BlogDetailController',
 				templateUrl: cf_options.rest_path + '/blog/detail',
@@ -19,7 +20,12 @@ if (typeof angular != 'undefined') {
 
 		$routeProvider.when('/category/:id', {
 				controller: 'CategoryController',
-				templateUrl: cf_options.rest_path + '/blog/catlist',
+				templateUrl: cf_options.rest_path + '/blog-cat/list',
+		});
+
+		$routeProvider.when('/user/:id', {
+				controller: 'BlogUsersController',
+				templateUrl: cf_options.rest_path + '/blog-user/list',
 		});
 
 		$routeProvider.otherwise({

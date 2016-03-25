@@ -39,21 +39,3 @@ app.controller('CatController', function ($scope, $location, CatService, Notific
 	};
 
 });
-
-
-app.controller('CategoryController', function ($scope, $timeout, $location, $route, BlogService, NotificationFactory) {
-	angular.extend(this, new CrudController($scope, $timeout, $location, $route, BlogService, NotificationFactory));
-	this.init();
-	this.get_list();
-
-	$scope.go_detail = function(id) {
-		$location.path("/" + id);
-		$('html,body').scrollTop(0);
-	};
-
-	$scope.go_category = function(slug) {
-		$location.path("category/" + slug);
-		$('html,body').scrollTop(0);
-	};
-
-});

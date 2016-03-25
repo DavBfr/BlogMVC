@@ -20,12 +20,12 @@ if (typeof angular != 'undefined') {
 
 		$routeProvider.when('/category/:id', {
 				controller: 'CategoryController',
-				templateUrl: cf_options.rest_path + '/blog-cat/list',
+				templateUrl: cf_options.rest_path + '/blog/list',
 		});
 
 		$routeProvider.when('/user/:id', {
-				controller: 'BlogUsersController',
-				templateUrl: cf_options.rest_path + '/blog-user/list',
+				controller: 'UserController',
+				templateUrl: cf_options.rest_path + '/blog/list',
 		});
 
 		$routeProvider.otherwise({

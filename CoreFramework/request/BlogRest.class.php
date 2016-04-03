@@ -5,13 +5,13 @@ class BlogRest extends Crud {
 	public function getRoutes() {
 		$this->addRoute("/", "GET", "get_list");
 		$this->addRoute("/count", "GET", "get_count");
-		
+
 		$this->addRoute("/cat/:id", "GET", "get_cat_list");
 		$this->addRoute("/cat/:id/count", "GET", "get_cat_count");
 
 		$this->addRoute("/user/:id", "GET", "get_user_list");
 		$this->addRoute("/user/:id/count", "GET", "get_user_count");
-		
+
 		$this->addRoute("/list", "GET", "get_list_partial");
 		$this->addRoute("/detail", "GET", "get_detail_partial");
 		//$this->addRoute("/new", "GET", "get_new");
@@ -119,9 +119,9 @@ class BlogRest extends Crud {
 			->leftJoin(UsersModel::TABLE, UsersModel::TABLE . "." . UsersModel::ID . "=" . PostsModel::TABLE . "." . PostsModel::USER_ID)
 			->orderByDesc(PostsModel::CREATED)
 			->SelectAs(UsersModel::TABLE . "." . UsersModel::USERNAME, "username")
-			
+
 			->whereEq(PostsModel::CATEGORY_ID, $cat->get("id"))
-			
+
 			->limit($this->options["limit"]);
 		$this->filterList($col);
 
@@ -143,10 +143,10 @@ class BlogRest extends Crud {
 		$id = $r["id"];
 		$cats = new CategoriesModel();
 		$cat = $cats->getBy(CategoriesModel::SLUG, $id);
-		
+
 		$col = Collection::Model($this->model);
 		$col->whereEq(PostsModel::CATEGORY_ID, $cat->get("id"));
-		
+
 		$this->filterList($col);
 		if (Input::has("q") && strlen(Input::get("q")) > 0) {
 			$col->filter(Input::get("q"));
@@ -176,9 +176,9 @@ class BlogRest extends Crud {
 			->leftJoin(UsersModel::TABLE, UsersModel::TABLE . "." . UsersModel::ID . "=" . PostsModel::TABLE . "." . PostsModel::USER_ID)
 			->orderByDesc(PostsModel::CREATED)
 			->SelectAs(UsersModel::TABLE . "." . UsersModel::USERNAME, "username")
-			
+
 			->whereEq(PostsModel::USER_ID, $cat->get("id"))
-			
+
 			->limit($this->options["limit"]);
 		$this->filterList($col);
 
@@ -200,10 +200,10 @@ class BlogRest extends Crud {
 		$id = $r["id"];
 		$cats = new UsersModel();
 		$cat = $cats->getBy(UsersModel::USERNAME, $id);
-		
+
 		$col = Collection::Model($this->model);
 		$col->whereEq(PostsModel::USER_ID, $cat->get("id"));
-		
+
 		$this->filterList($col);
 		if (Input::has("q") && strlen(Input::get("q")) > 0) {
 			$col->filter(Input::get("q"));

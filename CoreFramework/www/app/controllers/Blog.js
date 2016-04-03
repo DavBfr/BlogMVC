@@ -1,36 +1,36 @@
-app.service('BlogService', function($http) {
+app.service('BlogService', function ($http) {
 	angular.extend(this, new CrudService($http, 'blog'));
 
-	this.get_cat_list = function(filter, page, onsuccess, onerror) {
+	this.get_cat_list = function (filter, page, onsuccess, onerror) {
 		if (page < 0) {
 			onsuccess && onsuccess([], 200);
 			return;
 		}
 		if (filter == undefined)
 			filter = "";
-		$http.get(service_url + "/category?p=" + page + "&q=" + filter).success(function(data, status) {
+		$http.get(service_url + "/category?p=" + page + "&q=" + filter).success(function (data, status) {
 			if (data.success)
 				onsuccess && onsuccess(data.list, status);
 			else
 				onerror && onerror(data.error);
-		}).error(function(data, status) {
+		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});
 	};
 
-	this.get_user_list = function(filter, page, onsuccess, onerror) {
+	this.get_user_list = function (filter, page, onsuccess, onerror) {
 		if (page < 0) {
 			onsuccess && onsuccess([], 200);
 			return;
 		}
 		if (filter == undefined)
 			filter = "";
-		$http.get(service_url + "/user?p=" + page + "&q=" + filter).success(function(data, status) {
+		$http.get(service_url + "/user?p=" + page + "&q=" + filter).success(function (data, status) {
 			if (data.success)
 				onsuccess && onsuccess(data.list, status);
 			else
 				onerror && onerror(data.error);
-		}).error(function(data, status) {
+		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});
 	};
@@ -41,17 +41,17 @@ app.service('BlogService', function($http) {
 function BlogBaseController($scope, $timeout, $location, $route, BlogService, NotificationFactory) {
 	angular.extend(this, new CrudController($scope, $timeout, $location, $route, BlogService, NotificationFactory));
 
-	$scope.go_detail = function(id) {
+	$scope.go_detail = function (id) {
 		$location.path("/" + id);
 		$('html,body').scrollTop(0);
 	};
 
-	$scope.go_category = function(id) {
+	$scope.go_category = function (id) {
 		$location.path("category/" + id);
 		$('html,body').scrollTop(0);
 	};
 
-	$scope.go_user = function(id) {
+	$scope.go_user = function (id) {
 		$location.path("user/" + id);
 		$('html,body').scrollTop(0);
 	};
@@ -59,23 +59,23 @@ function BlogBaseController($scope, $timeout, $location, $route, BlogService, No
 };
 
 
-app.controller('BlogController', function($scope, $timeout, $location, $route, BlogService, NotificationFactory) {
+app.controller('BlogController', function ($scope, $timeout, $location, $route, BlogService, NotificationFactory) {
 	angular.extend(this, new BlogBaseController($scope, $timeout, $location, $route, BlogService, NotificationFactory));
 	this.init();
 	this.get_list();
 });
 
 
-app.controller('BlogDetailController', function($scope, $timeout, $location, $route, $routeParams, BlogService, NotificationFactory) {
+app.controller('BlogDetailController', function ($scope, $timeout, $location, $route, $routeParams, BlogService, NotificationFactory) {
 	angular.extend(this, new BlogBaseController($scope, $timeout, $location, $route, BlogService, NotificationFactory));
 	var self = this;
 
-	this.get_fiche = function(id) {
-		BlogService.getOne(id, function(data) {
+	this.get_fiche = function (id) {
+		BlogService.getOne(id, function (data) {
 			$scope.id = id;
 			$scope.item = data.data;
 			$scope.loading = false;
-		}, function(data) {
+		}, function (data) {
 			$scope.loading = false;
 			NotificationFactory.error(data);
 		});

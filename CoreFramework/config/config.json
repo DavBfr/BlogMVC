@@ -5,36 +5,5 @@
 
 	"scripts": [
 		"media/styles.less"
-	],
-
-	"model": {
-		"categories": {
-			"id": { "type": "auto", "null": false, "list": false, "edit": false, "primary": true, "default": null, "autoincrement": true },
-			"name": { "type": "text", "list":true,"null": false, "primary": false, "default": null, "autoincrement": false },
-			"slug": { "type": "text", "null": false, "edit":false,"primary": false, "default": null, "autoincrement": false },
-			"post_count": { "type": "int", "null": false, "list": true, "caption": "Count", "edit":false,"primary": false, "default": 0, "autoincrement": false }
-		},
-		"comments": {
-			"id": { "type": "auto", "null": false, "list": false, "edit": false, "primary": true, "default": null, "autoincrement": true },
-			"post_id": { "type": "int", "null": false, "primary": false, "default": null, "autoincrement": false },
-			"username": { "type": "text", "null": false, "primary": false, "default": null, "autoincrement": false },
-			"mail": { "type": "text", "null": false, "primary": false, "default": null, "autoincrement": false },
-			"content": { "type": "text", "null": false, "primary": false, "default": null, "autoincrement": false },
-			"created": { "type": "datetime", "null": false, "primary": false, "default": null, "autoincrement": false }
-		},
-		"posts": {
-			"id": { "type": "auto", "null": false, "list": false, "edit": false, "primary": true, "default": null, "autoincrement": true },
-			"category_id": { "type": "int", "caption":"Category", "list": true, "null": false, "primary": false, "default": null, "autoincrement": false, "foreign": ["categories", "id", "name"] },
-			"user_id": { "type": "int", "null": false, "primary": false, "edit":false, "default": null, "autoincrement": false },
-			"name": { "caption": "Name", "type": "text", "list":true, "null": false, "primary": false, "default": null, "autoincrement": false },
-			"slug": { "type": "text", "null": false, "primary": false, "edit":false, "default": null, "autoincrement": false },
-			"content": { "type": "text", "list":true, "null": false, "primary": false, "default": null, "autoincrement": false, "editor": "markdown" },
-			"created": { "type": "datetime", "edit": false, "list":true, "null": false, "primary": false, "default": null, "autoincrement": false }
-		},
-		"users": {
-			"id": { "type": "auto", "null": false, "list": false, "edit": false, "primary": true, "default": null, "autoincrement": true },
-			"username": { "type": "text","list":true, "null": false, "primary": false, "default": null, "autoincrement": false },
-			"password": { "type": "password", "null": false, "primary": false, "default": null, "autoincrement": false }
-		}
-	}
+	]
 }

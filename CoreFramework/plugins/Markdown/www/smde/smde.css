@@ -1,3 +1,4 @@
-.CodeMirror, .CodeMirror-scroll {
-	max-height: 400px;
+.CodeMirror,
+.CodeMirror-scroll {
+    max-height: 400px;
 }

@@ -5,10 +5,7 @@ app.service('CommentService', function ($http) {
 
 	this.get_list = function (id, onsuccess, onerror) {
 		$http.get(service_url + "/" + id).success(function (data, status) {
-			if (data.success)
-				onsuccess && onsuccess(data.list, status);
-			else
-				onerror && onerror(data.error);
+			onsuccess && onsuccess(data.list, status);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});
@@ -18,10 +15,7 @@ app.service('CommentService', function ($http) {
 		if (filter == undefined)
 			filter = "";
 		$http.get(service_url + "/count?q=" + filter).success(function (data, status) {
-			if (data.success)
-				onsuccess && onsuccess(data);
-			else
-				onerror && onerror(data.error);
+			onsuccess && onsuccess(data);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});
@@ -33,10 +27,7 @@ app.service('CommentService', function ($http) {
 			'mail': email,
 			'content': content
 		}).success(function (data, status) {
-			if (data.success)
-				onsuccess && onsuccess(data);
-			else
-				onerror && onerror(data.error);
+			onsuccess && onsuccess(data);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});

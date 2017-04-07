@@ -9,10 +9,7 @@ app.service('BlogService', function ($http) {
 		if (filter == undefined)
 			filter = "";
 		$http.get(service_url + "/category?p=" + page + "&q=" + filter).success(function (data, status) {
-			if (data.success)
 				onsuccess && onsuccess(data.list, status);
-			else
-				onerror && onerror(data.error);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});
@@ -26,10 +23,7 @@ app.service('BlogService', function ($http) {
 		if (filter == undefined)
 			filter = "";
 		$http.get(service_url + "/user?p=" + page + "&q=" + filter).success(function (data, status) {
-			if (data.success)
-				onsuccess && onsuccess(data.list, status);
-			else
-				onerror && onerror(data.error);
+			onsuccess && onsuccess(data.list, status);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});

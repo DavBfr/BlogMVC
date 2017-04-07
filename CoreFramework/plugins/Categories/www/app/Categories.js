@@ -8,11 +8,8 @@ app.service('CatService', function ($http) {
 		}
 
 		$http.get(cf_options.rest_path + "/blog-cat").success(function (data, status) {
-			if (data.success) {
-				data_cache = data.list;
-				onsuccess && onsuccess(data.list, status);
-			} else
-				onerror && onerror(data.error);
+			data_cache = data.list;
+			onsuccess && onsuccess(data.list, status);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});

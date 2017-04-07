@@ -7,10 +7,7 @@ app.service('CategoryService', function ($http) {
 			return;
 		}
 		$http.get(this.getServiceUrl() + "/" + filter + "?p=" + page).success(function (data, status) {
-			if (data.success)
-				onsuccess && onsuccess(data.list, status);
-			else
-				onerror && onerror(data.error);
+			onsuccess && onsuccess(data.list, status);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});
@@ -18,10 +15,7 @@ app.service('CategoryService', function ($http) {
 
 	this.get_count = function (filter, onsuccess, onerror) {
 		$http.get(this.getServiceUrl() + "/" + filter + "/count").success(function (data, status) {
-			if (data.success)
-				onsuccess && onsuccess(data);
-			else
-				onerror && onerror(data.error);
+			onsuccess && onsuccess(data);
 		}).error(function (data, status) {
 			onerror && onerror(data, status);
 		});

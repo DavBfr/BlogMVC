@@ -9,7 +9,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * Generated with CF 2.0 on Fri, 18 Mar 2016 19:42:52 +0100
+ * Generated with CF 2.1 on Fri, 07 Apr 2017 05:14:28 +0200
  **/
 
 if (!file_exists(dirname(__file__) . "/config/paths.php"))
@@ -24,5 +24,5 @@ else
 	require_once(CF_DIR . "/cf.php");
 
 $tpt = CorePlugin::bootstrap();
-configure("CF_TEMPLATE", "index.php");
+Options::set("CF_TEMPLATE", "index.php", "Template to load");
 $tpt->outputCached(CF_TEMPLATE);
